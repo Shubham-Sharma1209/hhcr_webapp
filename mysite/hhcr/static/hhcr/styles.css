@@ -1,0 +1,9 @@
+*{ 
+    /* border: 2px  solid red; */
+    --button-color:	#D2042D;
+    --text-color:black;
+    
+}
+body{
+    background-color:lightgrey;
+}

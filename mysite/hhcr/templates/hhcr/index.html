@@ -1,0 +1,136 @@
+{%extends 'hhcr/base.html' %}
+{% load static %}
+{%block style_index%}
+.tp1{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: #c1c397;
+    height:100vh;
+}
+.box img{
+    width:100%;
+    scale: 1.5;
+    margin-left:-100px;
+}
+.box{
+    margin:auto 0px;
+}
+.box p{
+    font-size:large;
+    margin-right:50px;
+    padding: 20px 200px 20px 50px;
+}
+.uploadpanel{
+    background-color: aliceblue;
+    height:100vh;
+}
+.image{
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.image button img{
+    width:100%;
+    height:100%;
+    object-fit: contain;
+}
+.display_img_box{
+    border: 5px solid gainsboro;
+    background-color: gainsboro;
+    /* margin-top:20vh; */
+    width:30vw;
+    height:70vh;
+    position:relative;
+}
+#display_img{
+    align-self: center;
+    width:100%;
+    height:100%;
+    object-fit: contain;
+}
+.hidden{
+    display:none;
+}
+.selectbutton{
+    width:40vw;
+    height:60vh;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.bothselect{
+    height:10vh;
+    width:15vw;
+}
+.selectbutton button{
+    background-color: red;
+    border-radius: 50px;
+    border:none;
+    box-shadow: 5px 5px 30px rgba(25, 25, 25, 0.855);
+}
+.onlyselect{
+    height:20vh;
+    width:30vw;
+}
+{% endblock %}
+
+{%block body_index%}
+<div class="container-fluid tp1">
+    <div class="box">
+        <p><em>Hindi, with over 600 million speakers, is not just a means of communication but a profound cultural treasure. It is the fourth most spoken language in the world, playing a pivotal role in preserving India's rich heritage. Hindi bridges diverse communities, enhances cultural exchange, and fosters a deep connection to our historical roots, making it an invaluable part of our global linguistic landscape.</em></p>
+    </div>
+    <div class="box">
+        <img src="{% static 'hhcr/img_tp1.jpg' %}" alt="">
+    </div>
+</div>
+
+<div class="container-fluid uploadpanel">
+    <div class="image">
+        <div class="display_img_box hidden">
+            <img id="display_img" src="" alt="Image" hidden>
+        </div>
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{form.document}}
+            <div class="selectbutton">
+                <button type="button" class="onlyselect" id="docselect">
+                    <img src="{% static 'hhcr\cloud-upload-signal-svgrepo-com.svg'%}">
+                </button>
+                <button type="submit" class="bothselect hidden" id="selectagain">Upload Image</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+
+{%block js_index%}
+$("#docselect").on('click', (function(e){
+    $("#doc_id").click();   
+}
+));
+$('#doc_id').change(function(event){
+    var selectedFile = event.target.files[0];
+    var reader = new FileReader();
+    var imgtag = document.getElementById("display_img");
+    imgtag.title = selectedFile.name;
+    reader.onload = function(event) {
+        imgtag.src = event.target.result;
+    };
+
+    reader.readAsDataURL(selectedFile);
+    $('#docselect').addClass('bothselect');
+    $('#docselect').removeClass('onlyselect');
+    $('#selectagain').removeClass('hidden');
+    $('.display_img_box').removeClass('hidden');
+    $('.display_img_box').addClass('display_img_box');
+    var dis_image=document.getElementById("display_img");
+    dis_image.hidden = false;
+});
+
+{% endblock %}
